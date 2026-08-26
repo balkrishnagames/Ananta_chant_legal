@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join a group on Ananta Japa</title>
+<style>
+  body { font-family: -apple-system, Roboto, Arial, sans-serif; background: #FCF1DE; color: #3E2723;
+         display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 24px; box-sizing: border-box; }
+  .card { max-width: 420px; text-align: center; }
+  h1 { font-size: 1.4rem; margin-bottom: 8px; }
+  p { color: #6D4C41; line-height: 1.5; }
+  a.button { display: inline-block; margin-top: 20px; padding: 14px 28px; background: #B8860B; color: #fff;
+             text-decoration: none; border-radius: 24px; font-weight: bold; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Join your chant group on Ananta Japa</h1>
+    <p id="msg">Opening the app&hellip;</p>
+    <a id="fallback" class="button" href="https://play.google.com/store/apps/details?id=com.anantajapa.app">Get Ananta Japa on Google Play</a>
+  </div>
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var code = params.get('code') || '';
+    var isAndroid = /Android/i.test(navigator.userAgent);
+    var playStoreUrl = 'https://play.google.com/store/apps/details?id=com.anantajapa.app';
+
+    if (isAndroid && code) {
+      document.getElementById('msg').textContent = 'Opening Ananta Japa… if nothing happens, tap the button below.';
+      var intentUrl = 'intent://join?code=' + encodeURIComponent(code) +
+        '#Intent;scheme=anantajapa;package=com.anantajapa.app;S.browser_fallback_url=' +
+        encodeURIComponent(playStoreUrl) + ';end';
+      window.location.href = intentUrl;
+    } else if (!code) {
+      document.getElementById('msg').textContent = 'This invite link is missing a code. Ask for a fresh invite.';
+    } else {
+      document.getElementById('msg').textContent = 'Ananta Japa is available on Android. Get it on Google Play, then use the invite link again on your phone to join.';
+    }
+  </script>
+</body>
+</html>
